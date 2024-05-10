@@ -34,23 +34,12 @@
             font-size: 1.2em;
             color: #666;
         }
-        .doubled-lined-text {
-          position: relative;
-          display: inline-block;
-        }
-        .doubled-lined-text::before,
-        .doubled-lined-text::after {
-          content: "";
-          position: absolute;
-          width: 100%;
-          border-bottom: 1px double black; /* 调整线的样式，这里是双线 */
-          top: 50%; /* 调整线条的垂直位置 */
-        }
-        .doubled-lined-text::before {
-          left: -5px; /* 调整线条与文字的水平间距 */
-        }
-        .doubled-lined-text::after {
-          right: -5px; /* 同上，根据需要调整 */
+        .doubled-line {
+            display: block;
+            height: 2px;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black; /* 这里创建了双线效果 */
+            margin: 20px 0; /* 可以调整上下外边距来控制与其他元素的距离 */
         }
     </style>
 </head>
@@ -61,7 +50,8 @@
         </h1>
     </div>
     <div class="content">
-        <span class="double-lined-text">赵世驹 Shiju Zhao </span>
+        <span>赵世驹 Shiju Zhao (Last Modified: 2024-05-10) </span>
+        <div class="double-line"></div>
         <p>
             我正在南京大学计算机科学与技术系攻读博士学位！ <br>
             Ph.D. Student <br>
@@ -72,7 +62,8 @@
             Office: CS Building 427 <br>
             Email: shijuzhao [at] smail.nju.edu.cn <br>
         </p>
-        <span class="double-lined-text">I recieved</span>
+        <div class="double-line"></div>
+        <span>I recieved</span>
     </div>
 </body>
 </html>
