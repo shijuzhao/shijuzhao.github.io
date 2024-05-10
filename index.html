@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiju Zhao's homepage</title>
+    <title>Shiju's homepage</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,16 +34,45 @@
             font-size: 1.2em;
             color: #666;
         }
+        .doubled-lined-text {
+          position: relative;
+          display: inline-block;
+        }
+        .doubled-lined-text::before,
+        .doubled-lined-text::after {
+          content: "";
+          position: absolute;
+          width: 100%;
+          border-bottom: 1px double black; /* 调整线的样式，这里是双线 */
+          top: 50%; /* 调整线条的垂直位置 */
+        }
+        .doubled-lined-text::before {
+          left: -5px; /* 调整线条与文字的水平间距 */
+        }
+        .doubled-lined-text::after {
+          right: -5px; /* 同上，根据需要调整 */
+        }
     </style>
 </head>
 <body>
     <div class="welcome-screen">
-        <h1>欢迎来到我的主页！</h1>
-        <h1>Welcome to my homepage!</h1>
+        <h1>欢迎来到赵世驹的主页！<br>
+            Welcome to Shiju's homepage!
+        </h1>
     </div>
     <div class="content">
-        <p>这里是更多的内容...</p>
-        <!-- 在这里添加您的其他内容 -->
+        <span class="double-lined-text">赵世驹 Shiju Zhao </span>
+        <p>
+            我正在南京大学计算机科学与技术系攻读博士学位！ <br>
+            Ph.D. Student <br>
+            Department of Computer Science and Technology <br>
+            Nanjing University <br>
+            163 Xianlin Avenue, Nanjing, Jiangsu 210023, China <br>
+            <br>
+            Office: CS Building 427 <br>
+            Email: shijuzhao [at] smail.nju.edu.cn <br>
+        </p>
+        <span class="double-lined-text">I recieved</span>
     </div>
 </body>
 </html>
