@@ -27,6 +27,29 @@
             margin-bottom: 0.5em;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
         }
+        .language-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button {
+            appearance: button;
+            -webkit-appearance: button;
+            -moz-appearance: button;
+            text-decoration: none;
+            color: white;
+            background-color: #337ab7;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background-color: #23537c;
+        }
         .content {
             margin-top: 50px; /* 确保欢迎语下方有足够的空间 */
         }
@@ -54,8 +77,12 @@
         <h1>欢迎来到赵世驹的主页！<br>
             Welcome to Shiju's homepage!
         </h1>
+        <div class="languate-buttons">
+            <a href=""https://shijuzhao.github.io/zh/index.html" class="button">中文版</a>
+            <a href=""https://shijuzhao.github.io/en/index.html" class="button">English</a>
+        </div>
     </div>
-    <div class="content">
+    <!-- <div class="content">
         <name>赵世驹 Shiju Zhao (Last Modified: 2024-05-10) </name>
         <div class="doubled-line"></div>
         <p>
@@ -76,6 +103,6 @@
         <section>Publications</section>
         <div class="doubled-line"></div>
         <span></span>
-    </div>
+    </div> -->
 </body>
 </html>
