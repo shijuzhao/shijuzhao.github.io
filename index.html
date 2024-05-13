@@ -15,7 +15,8 @@
         .welcome-screen {
             position: relative;
             height: 100vh; /* 占满整个视口高度 */
-            display: flex;
+            display: grid;
+            place-items: center;
             justify-content: center;
             align-items: center;
             text-align: center;
@@ -30,7 +31,7 @@
         .language-buttons {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         .button {
             appearance: button;
@@ -41,7 +42,7 @@
             background-color: #337ab7;
             border: none;
             padding: 10px 20px;
-            margin: 0 10px;
+            margin: 0 50px;
             cursor: pointer;
             border-radius: 5px;
             text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
@@ -64,13 +65,10 @@
         <h1>欢迎来到赵世驹的主页！<br />
             Welcome to Shiju's homepage!
         </h1>
-        <p>
-            <br />
-            <div class="languate-buttons">
-                <a href="zh/index.html" class="button">中文版</a>
-                <a href="en/index.html" class="button">English</a>
-            </div>
-        </p>
+        <div class="languate-buttons">
+            <a href="zh/index.html" class="button">中文版</a>
+            <a href="en/index.html" class="button">English</a>
+        </div>
     </div>
 </body>
 </html>
