@@ -6,7 +6,6 @@ date: 2025-02-21
 comments: true
 ---
 
-<!-- # 位置独立的KV缓存 -->
 [论文地址](https://arxiv.org/abs/2502.01960)
 
 TL; DR (Too Long; Didn't Read): KV cache 复用可以不受位置的限制，只要重计算其中小部分即可。

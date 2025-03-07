@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "FlashAttention底层逻辑"
 theme: jekyll-theme-merlot
 date: 2024-11-04
