@@ -3,6 +3,7 @@ layout: post
 title: "FlashAttention底层逻辑"
 theme: jekyll-theme-merlot
 date: 2024-11-04
+comments: true
 ---
 
 <script type="text/x-mathjax-config">
@@ -229,6 +230,7 @@ $$
 # 四、FlashAttention
 
 FlashAttention其实也是上述的思想，现在我们趁热打铁，推导FlashAttention 的算法流程。引入Online softmax 后，计算Attention 的算法如下：
+
 ![image.png](https://paragonlight.github.io/llm-course/images/l7/flashattention_v1.png)
 
 我们重复上文的思路：我们并不需要知道每一个$\mathbf{o}_i,a_i$等于多少，我们只要拿到最后的$\mathbf{o}_N$就可以了。我可以构造一个数列$\{\mathbf{o}_i'\}$，使得
@@ -276,6 +278,7 @@ FlashAttention V1 中采用了一个非直觉的外层循环矩阵$K,V$，内层
 ## 减少了非矩阵乘法的运算次数
 
 现代GPU对矩阵乘法有专门的硬件优化，矩阵乘法FLOPS是非矩阵乘法FLOPS的16倍左右。具体实现上，FlashAttention V1 每轮迭代都有一个rescale 操作：
+
 ![image.png](https://paragonlight.github.io/llm-course/images/l7/flash_attn_rescale.png)
 
 在V2 中，不再在每轮迭代中都除以$d_i'$，而是等循环体结束以后，对计算得到的$\mathbf{o}_N'$统一除以$d_N'$。

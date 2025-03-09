@@ -3,7 +3,7 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=640">
+    <meta name="viewport" content="width=960">
 
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}" media="screen">
     <link rel="stylesheet" href="{{ '/assets/css/mobile.css' | relative_url }}" media="only screen and (max-width:640px)">
@@ -17,7 +17,14 @@
         $('#main_content').headsmart()
       })
     </script>
-
+    <!-- add width for code block -->
+    <style>
+      pre.highlight {
+        width: 800px;
+        margin-left: -80px;
+        margin-right: -80px;
+      }
+    </style>
 {% seo %}
 
 {% include head-custom.html %}

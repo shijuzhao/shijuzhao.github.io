@@ -1,7 +1,6 @@
 title: 博客
 email: shijuzhao@smail.nju.edu.cn
 description: 欢迎访问我的博客！
-url: "https://sjzhao.com"
 github_username: shijuzhao
 remote_theme: pages-themes/merlot@v0.2.0
 plugins:
