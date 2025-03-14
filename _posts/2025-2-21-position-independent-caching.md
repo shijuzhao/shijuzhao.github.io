@@ -43,16 +43,28 @@ TL; DR (Too Long; Didn't Read): KV cache 复用可以不受位置的限制，只
 
 ![图例](/Figures/PIC_5.pdf "图例")
 ![主要结果](/Figures/PIC_6.pdf "主要结果")
-## 灵敏度分析
-当图片的数量变多时，InfoBlend也没有生成质量的显著下降。
-
+## 吞吐量
+随着请求到达速度的增加，请求处理的首字延迟增加，吞吐量先上升后下降。但InfoBlend保持了最低的首字延迟和最高的吞吐量。
 ![图例](/Figures/PIC_7.pdf "图例")
 <div style="display: flex; justify-content: space-around;">
   <div>
     <img src="/Figures/PIC_8.pdf" alt="TTFT" style="max-width:100%;">
   </div>
   <div>
-    <img src="/Figures/PIC_9.pdf" alt="Score" style="max-width:100%;">
+    <img src="/Figures/PIC_9.pdf" alt="Throughput" style="max-width:100%;">
+  </div>
+</div>
+
+## 灵敏度分析
+当图片的数量变多时，InfoBlend也没有生成质量的显著下降。
+
+![图例](/Figures/PIC_10.pdf "图例")
+<div style="display: flex; justify-content: space-around;">
+  <div>
+    <img src="/Figures/PIC_11.pdf" alt="TTFT" style="max-width:100%;">
+  </div>
+  <div>
+    <img src="/Figures/PIC_12.pdf" alt="Score" style="max-width:100%;">
   </div>
 </div>
 
