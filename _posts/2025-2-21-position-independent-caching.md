@@ -45,6 +45,7 @@ TL; DR (Too Long; Didn't Read): KV cache 复用可以不受位置的限制，只
 ![主要结果](/Figures/PIC_6.pdf "主要结果")
 ## 吞吐量
 随着请求到达速度的增加，请求处理的首字延迟增加，吞吐量先上升后下降。但InfoBlend保持了最低的首字延迟和最高的吞吐量。
+
 ![图例](/Figures/PIC_7.pdf "图例")
 <div style="display: flex; justify-content: space-around;">
   <div>
