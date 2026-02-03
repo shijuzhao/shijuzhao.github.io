@@ -65,6 +65,4 @@ COMB是一个专为管理位置独立的KV cache（简称PICache）而设计的�
 
 我们可以给Agent装上一个Encoder，将所有检索到的乱序的东西丢进Encoder，问题和模型的思考留在Decoder，当模型需要检索新的东西时，就把以前检索到的东西丢掉，把新检索到的东西扔进Encoder。想象一下，如果Decoder的128K上下文里只有问题和模型自己的思维链，没有嘈杂的参考文献的信息，那么这个Agent的能力将会有多强。
 
-<div align="center">
-    <img alt="COMB" src="{{ '/Figures/logo.svg' | relative_url }}" width=50%>
-</div>
+![COMB](/Figures/logo.svg){: .center-image}
