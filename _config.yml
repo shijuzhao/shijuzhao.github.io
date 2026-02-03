@@ -3,5 +3,6 @@ email: shijuzhao@smail.nju.edu.cn
 description: 欢迎访问我的博客！
 github_username: shijuzhao
 remote_theme: pages-themes/merlot@v0.2.0
+base_url: ""
 plugins:
         - jekyll-remote-theme

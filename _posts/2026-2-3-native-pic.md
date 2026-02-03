@@ -47,9 +47,11 @@ COMB是一个专为管理位置独立的KV cache（简称PICache）而设计的�
 
 # 性能评估
 ## 主要结果
-实验结果显示，COMB节省了51-94%的首字延迟，并拥有相仿的准确度。在Deepseek-V2-Lite-Chat模型的测试上，COMB甚至超出了基座模型的准确率，这是因为CombDeepseek是由更强大的Llama-3.1-8B-Instruct模型生成的数据训练的。
+实验结果显示，COMB节省了51-94%的首字延迟，并拥有相仿的准确度。
 
 ![Llama](/Figures/NPIC_4.png "Llama")
+
+在Deepseek-V2-Lite-Chat模型的测试上，COMB甚至超出了基座模型的准确率，这是因为CombDeepseek是由更强大的Llama-3.1-8B-Instruct模型生成的数据训练的。
 
 ![Deepseek](/Figures/NPIC_5.png "Deepseed")
 
@@ -62,3 +64,7 @@ COMB是一个专为管理位置独立的KV cache（简称PICache）而设计的�
 如今我们已经进入了Agent的时代。什么是Agent, 它与LLM有什么区别？一个普遍认可的说法是Agent可以根据长期目标制定短期动作，会调用工具。那么Agent一个很重要的能力就是检索。除了需要查阅参考文献来获得信息，Agent也需要检索应该使用哪个工具更合适。只要涉及到检索，就需要PIC，因为检索回来的东西在各种排列组合的可能下一定是乱序的。如果使用前缀缓存，基本上只有排在第一个的项目可以复用KV cache，后面的KV cache全都不能复用，这非常低效。
 
 我们可以给Agent装上一个Encoder，将所有检索到的乱序的东西丢进Encoder，问题和模型的思考留在Decoder，当模型需要检索新的东西时，就把以前检索到的东西丢掉，把新检索到的东西扔进Encoder。想象一下，如果Decoder的128K上下文里只有问题和模型自己的思维链，没有嘈杂的参考文献的信息，那么这个Agent的能力将会有多强。
+
+<div align="center">
+    <img alt="COMB" src="{{ '/Figures/logo.svg' | relative_url }}" width=50%>
+</div>
