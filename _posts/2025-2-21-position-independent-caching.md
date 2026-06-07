@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "位置独立的KV缓存"
+title: "位置无关的KV缓存"
 theme: jekyll-theme-merlot
 date: 2025-02-21
 comments: true
@@ -28,7 +28,7 @@ TL; DR (Too Long; Didn't Read): KV cache 复用可以不受位置的限制，只
 ![先前工作对比](/Figures/PIC_2.pdf "先前工作对比")
 
 # 关键创新点一：KV cache存储系统设计
-我们借鉴了位置独立编码的思想，设计了静态库和动态库来存储多模态信息的KV cache。静态库用于存储用户上传的私有信息，用户之间的数据是隔离的。动态库用于存储互联网上的公开信息以及管理者维护的参考文献。静态库的KV cache连接类似于代码编译的静态链接，它在Prefill阶段（或编译器的编译阶段）将用户输入的文本与图片的KV cache连接起来。动态库的KV cache连接类似于代码执行的动态链接，它是在Decode阶段，当MLLM判断需要调用RAG时，检索器会搜索相关的资料并将它的KV cache与已有的KV cache连接。检索器在这里的作用类似于操作系统中的重定位表。
+我们借鉴了位置无关代码的思想，设计了静态库和动态库来存储多模态信息的KV cache。静态库用于存储用户上传的私有信息，用户之间的数据是隔离的。动态库用于存储互联网上的公开信息以及管理者维护的参考文献。静态库的KV cache连接类似于代码编译的静态链接，它在Prefill阶段（或编译器的编译阶段）将用户输入的文本与图片的KV cache连接起来。动态库的KV cache连接类似于代码执行的动态链接，它是在Decode阶段，当MLLM判断需要调用RAG时，检索器会搜索相关的资料并将它的KV cache与已有的KV cache连接。检索器在这里的作用类似于操作系统中的重定位表。
 
 ![InfoBlend系统设计](/Figures/PIC_3.pdf "InfoBlend系统设计")
 
