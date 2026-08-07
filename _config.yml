@@ -6,3 +6,4 @@ remote_theme: pages-themes/merlot@v0.2.0
 base_url: ""
 plugins:
         - jekyll-remote-theme
+        - jemoji
