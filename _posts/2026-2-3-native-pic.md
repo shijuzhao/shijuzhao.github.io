@@ -21,7 +21,7 @@ TL; DR (Too Long; Didn't Read): 我们把原始Transformer结构的Encoder装回
 2. 存储KV cache到KVLib，需要复用该文档时再将其取出；
 3. 将位置独立的KV cache链接起来，用于大模型新的推理。
 
-![PIC流程](/Figures/NPIC_1.pdf "PIC流程")
+![PIC流程](/Figures/NPIC_1.svg "PIC流程")
 # 论文思路
 
 目前PIC没被业界使用的原因是它会导致模型生成质量下降，无法恢复到原来的水平。现有的PIC技术可以被分为两类：

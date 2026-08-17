@@ -187,7 +187,7 @@ $$
 
 这样$x_j-m(\mathbf{x})$是一个非正数，$0<e^{x_j-m(\mathbf{x})}\leq1$，就不会溢出了。于是我们可以想到一个简单的计算Safe softmax 的算法如下：
 
-![image.png](https://paragonlight.github.io/llm-course/images/l7/safe_softmax_alg.png)
+![image.png](https://njudeepengine.github.io/llm-course-lecture/images/2025/l7/safe_softmax_alg.png)
 
 它需要三次循环来计算，意味着至少需要$3N$次读数据和写数据操作。我们上面提到过，读写太频繁会使得GPU受到内存限制，我们应该通过改变计算顺序来减少读写显存（片下内存）的次数。缩减循环的个数可以减少读写的次数。观察这个算法，你会发现它三个循环不能被合并的原因是
 - 每个$d_i$的计算依赖于$m_N$，所以不能和第一个循环合并；
@@ -223,7 +223,7 @@ d_i'=&\sum_{j=1}^ie^{x_j-m_i}\\
 $$
 
 递推公式也有了，好，我们把算法整理一下，这就是Online softmax 算法：
-![image.png](https://paragonlight.github.io/llm-course/images/l7/online_softmax_v2.png)
+![image.png](https://njudeepengine.github.io/llm-course-lecture/images/2025/l7/online_softmax_v2.png)
 
 以上优化对于 softmax 操作来说已经到头了，我们不可能在一次循环中把 softmax 的结果计算出来。因为向量中的每个元素都是独立的，不可能在没有遍历到后续元素的情况下，确定当前元素最终的 softmax 值。
 
@@ -231,7 +231,7 @@ $$
 
 FlashAttention其实也是上述的思想，现在我们趁热打铁，推导FlashAttention 的算法流程。引入Online softmax 后，计算Attention 的算法如下：
 
-![image.png](https://paragonlight.github.io/llm-course/images/l7/flashattention_v1.png)
+![image.png](https://njudeepengine.github.io/llm-course-lecture/images/2025/l7/flashattention_v1.png)
 
 我们重复上文的思路：我们并不需要知道每一个$\mathbf{o}_i,a_i$等于多少，我们只要拿到最后的$\mathbf{o}_N$就可以了。我可以构造一个数列$\{\mathbf{o}_i'\}$，使得
 
@@ -260,10 +260,10 @@ $$
 $$
 
 经过这次优化，整个算法被优化成了一次循环，这就是FlashAttention 的原型：
-![image.png](https://paragonlight.github.io/llm-course/images/l7/flash_attn_1pass.png)
+![image.png](https://njudeepengine.github.io/llm-course-lecture/images/2025/l7/flash_attn_1pass.png)
 
 最后的一点细节就是使用了Tiling 技术。Tile 的意思是分块，Tiling 无非就是分块矩阵乘法。使用分块矩阵是因为片上内存非常小，只能一部分一部分地把矩阵的每个分块加载进来进行计算。以对矩阵$K$进行分块为例，假如把$K$分为$b$块，算法应改成下面的图片，区别是一次循环$N$轮变为了循环$\frac{N}{b}$轮，进一步减少了读写次数。
-![image.png](https://paragonlight.github.io/llm-course/images/l7/flash_attn_v1_tiling.png)
+![image.png](https://njudeepengine.github.io/llm-course-lecture/images/2025/l7/flash_attn_v1_tiling.png)
 
 最后我们再回来看FlashAttention 原论文的算法，想必你已经没有什么疑问了。
 ![image.png](https://minio.cvmart.net/cvmart-community/images/202312/04/3/rWgyt8k2EncYsjKqvlJW.png)
@@ -279,7 +279,7 @@ FlashAttention V1 中采用了一个非直觉的外层循环矩阵$K,V$，内层
 
 现代GPU对矩阵乘法有专门的硬件优化，矩阵乘法FLOPS是非矩阵乘法FLOPS的16倍左右。具体实现上，FlashAttention V1 每轮迭代都有一个rescale 操作：
 
-![image.png](https://paragonlight.github.io/llm-course/images/l7/flash_attn_rescale.png)
+![image.png](https://njudeepengine.github.io/llm-course-lecture/images/2025/l7/flash_attn_rescale.png)
 
 在V2 中，不再在每轮迭代中都除以$d_i'$，而是等循环体结束以后，对计算得到的$\mathbf{o}_N'$统一除以$d_N'$。
 
@@ -287,7 +287,7 @@ FlashAttention V1 中采用了一个非直觉的外层循环矩阵$K,V$，内层
 
 假设一个 block 实际上会被 SM 划分成 4 个 warp，在 V1 版本中，矩阵$K,V$的 block 会被划分成 4 个 warp，每个 warp 计算$Q_iK_j^\top$后会得到一个$B_r\times\frac{B_c}{4}$的矩阵，需要 4 个 warp 全部计算完以后，把四个矩阵排成一行（下图中 V1 版本红色的四个矩阵），才能计算softmax$(Q_iK_j^\top)$真正的值，这个过程中存在 warp 之间的通信。
 
-![image.png](https://paragonlight.github.io/llm-course/images/l7/flash_attn_v1_v2.png)
+![image.png](https://njudeepengine.github.io/llm-course-lecture/images/2025/l7/flash_attn_v1_v2.png)
 
 # 六、参考文献
 1. [From Online Softmax to FlashAttention.](https://courses.cs.washington.edu/courses/cse599m/23sp/notes/flashattn.pdf)

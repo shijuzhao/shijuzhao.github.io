@@ -17,7 +17,7 @@ TL; DR (Too Long; Didn't Read): KV cache 复用可以不受位置的限制，只
 
 但是前缀缓存技术仅能复用相同前缀的KV cache。如果两个请求的只在开头的表述不一样，那么整个序列的KV cache都不能被复用。在MLLM的应用场景如图片文本夹杂和多模态检索增强生成(Retrieval-Augmented Generation, RAG)中，前缀缓存是非常低效的。例如，在下图的对话中，如果下一个请求的开头是“We're planning to ...”，那么所有token的KV cache都不能被复用了。而图中的应用场景在互联网上又很常见，如新闻和博客文章都是图片文本夹杂的数据。
 
-![用户对话场景](/Figures/PIC_1.pdf "用户对话场景")
+![用户对话场景](/Figures/PIC_1.svg "用户对话场景")
 # 论文思路
 
 对于用户输入的处理（也称 Prefill），目前有两种朴素的想法。
@@ -25,47 +25,47 @@ TL; DR (Too Long; Didn't Read): KV cache 复用可以不受位置的限制，只
 - **完全复用**：直接将多模态信息的KV cache和对应文本的KV cache拼接作推理。这里我们假设用户输入的文本不同而多模态信息相同，因此系统没有新文本的KV cache，只能先计算出它的KV cache再和缓存好的多模态信息的KV cache拼接作Decode。
 
 如下图所示，**前缀缓存**的首字延迟长；**完全复用**违背了大模型计算的Attention 机制，因此生成质量低（这一点在论文中有实验证明）。于是本文提出了部分复用、部分重计算的方法，通过重计算极少量的多模态token，达到减少时延的同时保证生成质量不下降的效果。
-![先前工作对比](/Figures/PIC_2.pdf "先前工作对比")
+![先前工作对比](/Figures/PIC_2.svg "先前工作对比")
 
 # 关键创新点一：KV cache存储系统设计
 我们借鉴了位置无关代码的思想，设计了静态库和动态库来存储多模态信息的KV cache。静态库用于存储用户上传的私有信息，用户之间的数据是隔离的。动态库用于存储互联网上的公开信息以及管理者维护的参考文献。静态库的KV cache连接类似于代码编译的静态链接，它在Prefill阶段（或编译器的编译阶段）将用户输入的文本与图片的KV cache连接起来。动态库的KV cache连接类似于代码执行的动态链接，它是在Decode阶段，当MLLM判断需要调用RAG时，检索器会搜索相关的资料并将它的KV cache与已有的KV cache连接。检索器在这里的作用类似于操作系统中的重定位表。
 
-![InfoBlend系统设计](/Figures/PIC_3.pdf "InfoBlend系统设计")
+![InfoBlend系统设计](/Figures/PIC_3.svg "InfoBlend系统设计")
 
 # 关键创新点二：“选择Attention”机制实现
 为了保证生成质量不下降，我们需要选取一些关键token，重计算它们的KV cache，并复用非关键token的KV cache。因此我们实现了选择Attention机制：在每个Attention层中，当关键token的K和V张量被计算出来后，我们用它替换旧的KV cache来进行Attention矩阵的计算。这里我们用了假的KV cache（即全0的张量）来代替未被存储的文本KV cache，因为这假的KV cache在计算Attention前会被新的KV cache替换掉，所以它的取值不重要。
 
-![选择Attention](/Figures/PIC_4.pdf "选择Attention")
+![选择Attention](/Figures/PIC_4.svg "选择Attention")
 
 # 性能评估
 ## 主要结果
 实验结果显示，InfoBlend节省了54.1%的首字延迟，并在生成质量上没有显著的下降，得分最多下降了13.6%。
 
-![图例](/Figures/PIC_5.pdf "图例")
-![主要结果](/Figures/PIC_6.pdf "主要结果")
+![图例](/Figures/PIC_5.svg "图例")
+![主要结果](/Figures/PIC_6.svg "主要结果")
 ## 吞吐量
 随着请求到达速度的增加，请求处理的首字延迟增加，吞吐量先上升后下降。但InfoBlend保持了最低的首字延迟和最高的吞吐量。
 
-![图例](/Figures/PIC_7.pdf "图例")
+![图例](/Figures/PIC_7.svg "图例")
 <div style="display: flex; justify-content: space-around;">
   <div>
-    <img src="/Figures/PIC_8.pdf" alt="TTFT" style="max-width:100%;">
+    <img src="/Figures/PIC_8.svg" alt="TTFT" style="max-width:100%;">
   </div>
   <div>
-    <img src="/Figures/PIC_9.pdf" alt="Throughput" style="max-width:100%;">
+    <img src="/Figures/PIC_9.svg" alt="Throughput" style="max-width:100%;">
   </div>
 </div>
 
 ## 灵敏度分析
 当图片的数量变多时，InfoBlend也没有生成质量的显著下降。
 
-![图例](/Figures/PIC_10.pdf "图例")
+![图例](/Figures/PIC_10.svg "图例")
 <div style="display: flex; justify-content: space-around;">
   <div>
-    <img src="/Figures/PIC_11.pdf" alt="TTFT" style="max-width:100%;">
+    <img src="/Figures/PIC_11.svg" alt="TTFT" style="max-width:100%;">
   </div>
   <div>
-    <img src="/Figures/PIC_12.pdf" alt="Score" style="max-width:100%;">
+    <img src="/Figures/PIC_12.svg" alt="Score" style="max-width:100%;">
   </div>
 </div>
 
